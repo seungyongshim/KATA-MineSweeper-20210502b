@@ -1,14 +1,14 @@
 using System;
 using Xunit;
 
-namespace Sample.Tests
+namespace MineSweeper.Tests
 {
-    public class UnitTest1
+    public class CellSpec
     {
         [Fact]
         public void Test1()
         {
-            Assert.True(true);
+
         }
     }
 }
