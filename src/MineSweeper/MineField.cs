@@ -13,6 +13,14 @@ namespace MineSweeper
             Width = width;
             Height = height;
 
+            Cells = new Cell[Width * height];
+            for (int y = 0; y < Height; y++)
+            {
+                for (int x = 0; x < Width; x++)
+                {
+                    Cells[y * Width + x] = new Cell();
+                }
+            }
         }
 
         public IList<Cell> Cells { get; }

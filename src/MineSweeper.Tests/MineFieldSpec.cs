@@ -20,6 +20,7 @@ namespace MineSweeper.Tests
 
             // Assert
             sut.Cells.Count().Should().Be(9);
+            sut.Cells.Where(x => x.IsCovered == true).Count().Should().Be(9);
         }
     }
 }
