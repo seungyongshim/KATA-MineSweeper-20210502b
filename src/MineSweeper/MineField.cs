@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace MineSweeper
 {
@@ -20,22 +21,22 @@ namespace MineSweeper
         public int Width { get; }
         public int Height { get; }
 
+        public IEnumerable<int> RandomIndexGenerator()
+        {
+            while (true)
+            {
+                yield return RandomNumberGenerator.GetInt32(Width * Height);
+            }
+        }
+            
+
         public void SetBombs(int bombsCount)
         {
-            var rand = new Random();
-
-            for (int i = 0; i < bombsCount; i++)
+            foreach (var cell in RandomIndexGenerator().Distinct()
+                                                       .Select(x => Cells[x])
+                                                       .Take(bombsCount))
             {
-                var x = rand.Next(Width);
-                var y = rand.Next(Height);
-
-                if (Cells[y * Width + x].IsBomb)
-                {
-                    i--;
-                    continue;
-                }
-
-                Cells[y * Width + x].SetBomb();
+                cell.SetBomb();
             }
         }
     }
