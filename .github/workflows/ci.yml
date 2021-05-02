@@ -50,7 +50,7 @@ jobs:
         message: "Coverage Report  ${{github.sha}}"
         ref: 'gh-pages' 
         remove: ''  
-      if: contains('main', ${{github.ref}})
+      if: ${{ github.ref == 'refs/heads/main' }}
     - name: Publish Unit Test Results
       uses: docker://ghcr.io/enricomi/publish-unit-test-result-action:v1
       if: always()
