@@ -22,7 +22,21 @@ namespace MineSweeper
 
         public void SetBombs(int bombsCount)
         {
-            
+            var rand = new Random();
+
+            for (int i = 0; i < bombsCount; i++)
+            {
+                var x = rand.Next(Width);
+                var y = rand.Next(Height);
+
+                if (Cells[y * Width + x].IsBomb)
+                {
+                    i--;
+                    continue;
+                }
+
+                Cells[y * Width + x].SetBomb();
+            }
         }
     }
 }
