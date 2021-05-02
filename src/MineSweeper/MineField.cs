@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MineSweeper
 {
@@ -13,14 +10,9 @@ namespace MineSweeper
             Width = width;
             Height = height;
 
-            Cells = new Cell[Width * height];
-            for (int y = 0; y < Height; y++)
-            {
-                for (int x = 0; x < Width; x++)
-                {
-                    Cells[y * Width + x] = new Cell();
-                }
-            }
+            Cells = (from x in Enumerable.Range(0, width)
+                     from y in Enumerable.Range(0, height)
+                     select new Cell()).ToList();
         }
 
         public IList<Cell> Cells { get; }
