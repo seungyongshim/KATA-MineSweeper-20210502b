@@ -1,5 +1,3 @@
-using System;
-
 namespace MineSweeper
 {
     public class Cell
@@ -8,21 +6,16 @@ namespace MineSweeper
         public int NearBombsCount { get; set; }
         public bool IsCovered { get; private set; } = true;
 
-        public void SetBomb()
-        {
-            IsBomb = true;
-        }
+        public void SetBomb() => IsBomb = true;
 
-        public override string ToString()
-        {
-            if (IsCovered) return ".";
-            if (IsBomb) return "*";
-            return NearBombsCount.ToString();
-        }
+        
+        public void Click() => IsCovered = false;
 
-        public void Click()
+        public override string ToString() => this switch
         {
-            IsCovered = false;
-        }
+            { IsCovered: true } => ".",
+            { IsBomb: true} => "*",
+            _ => NearBombsCount.ToString(),
+        };
     }
 }
