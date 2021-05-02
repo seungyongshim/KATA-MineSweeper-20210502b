@@ -31,5 +31,17 @@ namespace MineSweeper.Tests
             // Assert
             sut.ToString().Should().Be("3");
         }
+
+        [Fact]
+        public void Covered()
+        {
+            // Arrange
+            var sut = new Cell();
+
+            // Act
+
+            // Assert
+            sut.ToString().Should().Be(".");
+        }
     }
 }
