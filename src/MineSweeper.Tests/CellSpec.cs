@@ -14,6 +14,7 @@ namespace MineSweeper.Tests
 
             // Act
             sut.SetBomb();
+            sut.Click();
 
             // Assert
             sut.ToString().Should().Be("*");
@@ -26,7 +27,8 @@ namespace MineSweeper.Tests
             var sut = new Cell();
 
             // Act
-            sut.NearBombsCount = 3;     
+            sut.NearBombsCount = 3;
+            sut.Click();
 
             // Assert
             sut.ToString().Should().Be("3");
