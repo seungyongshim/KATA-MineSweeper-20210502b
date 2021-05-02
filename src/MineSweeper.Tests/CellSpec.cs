@@ -26,7 +26,7 @@ namespace MineSweeper.Tests
             var sut = new Cell();
 
             // Act
-            sut.NearBombsCount = 3;
+            sut.NearBombsCount = 3;     
 
             // Assert
             sut.ToString().Should().Be("3");
