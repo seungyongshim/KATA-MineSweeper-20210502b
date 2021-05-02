@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,5 +19,10 @@ namespace MineSweeper
         public IList<Cell> Cells { get; }
         public int Width { get; }
         public int Height { get; }
+
+        public void SetBombs(int bombsCount)
+        {
+            
+        }
     }
 }
