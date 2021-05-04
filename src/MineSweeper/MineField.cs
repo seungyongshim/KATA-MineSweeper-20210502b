@@ -41,12 +41,6 @@ namespace MineSweeper
             }
         }
 
-        public static IEnumerable<Cell> NearCellGenerator(int x, int y, Func<(int, int), Cell> GetCellFunc) =>
-            from nearPos in NearPosGenerator(x, y)
-            let validCell = GetCellFunc(nearPos)
-            where IsNotNull(validCell)
-            select validCell;
-
         public Cell GetCell((int X, int Y) pos) => pos switch
         {
             (var x, _) when x < 0 || x >= Width => null,

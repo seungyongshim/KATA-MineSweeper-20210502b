@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 
@@ -26,5 +28,12 @@ namespace MineSweeper
         }
 
         public static bool IsNotNull<T>(T arg) => arg is not null;
+
+        public static IEnumerable<Cell> NearCellGenerator(int x, int y, Func<(int, int), Cell> getCellFunc) =>
+            from nearPos in NearPosGenerator(x, y)
+            let validCell = getCellFunc(nearPos)
+            where IsNotNull(validCell)
+            select validCell;
+
     }
 }
