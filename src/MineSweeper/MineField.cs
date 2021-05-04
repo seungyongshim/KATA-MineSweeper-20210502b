@@ -10,7 +10,11 @@ namespace MineSweeper
 {
     public class MineField
     {
-        public MineField(int width, int height)
+        public MineField(int width, int height, int bombsCount = 0) :
+            this(width, height, RandomIndexGenerator(width, height).Distinct()
+                                                                   .Take(bombsCount))
+        { }
+        public MineField(int width, int height, IEnumerable<(int X, int Y)> bombPosGenerator)
         {
             Width = width;
             Height = height;
@@ -19,31 +23,13 @@ namespace MineSweeper
                      from y in Enumerable.Range(0, height)
                      select new Cell(x, y, NearCellGenerator(x, y, GetCell)))
                     .ToList();
+
+            bombPosGenerator.ForEach(x => GetCell(x)?.SetBomb());
         }
 
         internal IList<Cell> Cells { get; }
         public int Width { get; }
         public int Height { get; }
-
-        public void SetBombs(int bombsCount)
-        {
-            foreach (var cell in RandomIndexGenerator(Width, Height).Distinct()
-                                                                    .Select(x => Cells[x])
-                                                                    .Take(bombsCount))
-            {
-                cell.SetBomb();
-            }
-        }
-
-        public void SetNearBombsCounts()
-        {
-            foreach (var cell in from bombCell in Cells.Where(x => x.IsBomb)
-                                 from nearCell in NearCellGenerator(bombCell.X, bombCell.Y, GetCell)
-                                 select nearCell)
-            {
-                cell.NearBombsCount++;
-            }
-        }
 
         public Cell GetCell((int X, int Y) pos) => pos switch
         {

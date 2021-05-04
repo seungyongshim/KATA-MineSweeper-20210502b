@@ -27,7 +27,11 @@ namespace MineSweeper
         public int Y { get; }
         public IEnumerable<Cell> NearCellGenerator { get; }
 
-        public void SetBomb() => IsBomb = true;
+        public void SetBomb()
+        {
+            IsBomb = true;
+            NearCellGenerator.ForEach(x => x.NearBombsCount++);
+        }
 
         public void Click()
         {
@@ -36,8 +40,7 @@ namespace MineSweeper
 
             if (NearBombsCount is not 0) return;
 
-            foreach (var nearCell in NearCellGenerator)
-                nearCell.Click();
+            NearCellGenerator.ForEach(x => x.Click());
         }
 
         public override string ToString() => this switch

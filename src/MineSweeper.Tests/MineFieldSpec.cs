@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using FluentAssertions;
 using Xunit;
@@ -24,10 +23,9 @@ namespace MineSweeper.Tests
         public void SetBombs()
         {
             // Arrange
-            var sut = new MineField(3, 3);
+            var sut = new MineField(3, 3, 3);
 
             // Act
-            sut.SetBombs(3);
 
             // Assert
             sut.Cells.Where(x => x.IsBomb).Count().Should().Be(3);
@@ -37,11 +35,9 @@ namespace MineSweeper.Tests
         public void SetNearBombsCounts()
         {
             // Arrange
-            var sut = new MineField(3, 3);
+            var sut = new MineField(3, 3, new[] { (0, 0) });
 
             // Act
-            sut.Cells[0].SetBomb();
-            sut.SetNearBombsCounts();
 
             // Assert
             sut.Cells.Select(x => x.NearBombsCount)
@@ -55,9 +51,7 @@ namespace MineSweeper.Tests
         public void Click()
         {
             // Arrange
-            var sut = new MineField(3, 3);
-            sut.Cells[0].SetBomb();
-            sut.SetNearBombsCounts();
+            var sut = new MineField(3, 3, new[] { (0, 0) });
 
             // Act
             sut.Click(2, 2);

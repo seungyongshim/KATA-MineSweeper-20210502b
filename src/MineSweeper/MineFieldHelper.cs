@@ -7,11 +7,12 @@ namespace MineSweeper
 {
     public static class MineFieldHelper
     {
-        public static IEnumerable<int> RandomIndexGenerator(int width, int height)
+        public static IEnumerable<(int X, int Y)> RandomIndexGenerator(int width, int height)
         {
             while (true)
             {
-                yield return RandomNumberGenerator.GetInt32(width * height);
+                yield return (RandomNumberGenerator.GetInt32(width),
+                              RandomNumberGenerator.GetInt32(height));
             }
         }
 
