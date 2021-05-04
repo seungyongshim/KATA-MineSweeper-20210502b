@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using static MineSweeper.MineFieldHelper;
+
+[assembly: InternalsVisibleTo("MineSweeper.Tests")]
 
 namespace MineSweeper
 {
@@ -17,7 +20,7 @@ namespace MineSweeper
                      select new Cell(x, y)).ToList();
         }
 
-        public IList<Cell> Cells { get; }
+        internal IList<Cell> Cells { get; }
         public int Width { get; }
         public int Height { get; }
 
@@ -45,7 +48,9 @@ namespace MineSweeper
         {
             (var x, _) when x < 0 || x >= Width => null,
             (_, var y) when y < 0 || y >= Height => null,
-            var p => Cells[(pos.Y * Width) + pos.X]
+            _ => Cells[(pos.Y * Width) + pos.X]
         };
+
+        public void Click(int x, int y) => throw new NotImplementedException();
     }
 }
