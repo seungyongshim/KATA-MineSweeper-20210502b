@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
+using static MineSweeper.MineFieldHelper;
 
 namespace MineSweeper
 {
@@ -21,19 +21,11 @@ namespace MineSweeper
         public int Width { get; }
         public int Height { get; }
 
-        public IEnumerable<int> RandomIndexGenerator()
-        {
-            while (true)
-            {
-                yield return RandomNumberGenerator.GetInt32(Width * Height);
-            }
-        }
-
         public void SetBombs(int bombsCount)
         {
-            foreach (var cell in RandomIndexGenerator().Distinct()
-                                                       .Select(x => Cells[x])
-                                                       .Take(bombsCount))
+            foreach (var cell in RandomIndexGenerator(Width, Height).Distinct()
+                                                                    .Select(x => Cells[x])
+                                                                    .Take(bombsCount))
             {
                 cell.SetBomb();
             }
@@ -41,23 +33,19 @@ namespace MineSweeper
 
         public void SetNearBombsCounts()
         {
-            // 폭탄 위치 루프
-            foreach (var cell in Cells.Where(x => x.IsBomb))
+            foreach (var cell in from bombCell in Cells.Where(x => x.IsBomb)
+                                 from nearCell in NearCellGenerator(bombCell.X, bombCell.Y, GetCell)
+                                 select nearCell)
             {
-                foreach(var item in NearCellGenerator(cell.X, cell.Y))
-                {
-                    // 폭탄 주변 블록에 +1
-                    item.NearBombsCount++;
-                }
+                cell.NearBombsCount++;
             }
         }
 
-        public IEnumerable<Cell> NearCellGenerator(int x, int y)
-        {
-            return NearCellPosGenerator(x, y).Select(GetCell)
-                                             .Where(IsNotNull);
-        }
-        public bool IsNotNull<T>(T arg) => arg is not null;
+        public static IEnumerable<Cell> NearCellGenerator(int x, int y, Func<(int, int), Cell> GetCellFunc) =>
+            from nearPos in NearPosGenerator(x, y)
+            let validCell = GetCellFunc(nearPos)
+            where IsNotNull(validCell)
+            select validCell;
 
         public Cell GetCell((int X, int Y) pos) => pos switch
         {
@@ -65,17 +53,5 @@ namespace MineSweeper
             (_, var y) when y < 0 || y >= Height => null,
             var p => Cells[(pos.Y * Width) + pos.X]
         };
-
-        public IEnumerable<(int X, int Y)> NearCellPosGenerator(int x, int y)
-        {
-            yield return (x - 1, y - 1);
-            yield return (x, y - 1);
-            yield return (x + 1, y - 1);
-            yield return (x - 1, y);
-            yield return (x + 1, y);
-            yield return (x - 1, y + 1);
-            yield return (x, y + 1);
-            yield return (x + 1, y + 1);
-        }
     }
 }
