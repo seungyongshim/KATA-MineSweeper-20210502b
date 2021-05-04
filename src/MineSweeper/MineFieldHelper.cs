@@ -27,13 +27,11 @@ namespace MineSweeper
             yield return (x + 1, y + 1);
         }
 
-        public static bool IsNotNull<T>(T arg) => arg is not null;
-
         public static IEnumerable<Cell> NearCellGenerator(int x, int y, Func<(int, int), Cell> getCellFunc) =>
             from nearPos in NearPosGenerator(x, y)
-            let validCell = getCellFunc(nearPos)
-            where IsNotNull(validCell)
-            select validCell;
+            let cell = getCellFunc(nearPos)
+            where cell is not null
+            select cell;
 
     }
 }

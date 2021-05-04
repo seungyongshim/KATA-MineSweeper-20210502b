@@ -17,7 +17,8 @@ namespace MineSweeper
 
             Cells = (from x in Enumerable.Range(0, width)
                      from y in Enumerable.Range(0, height)
-                     select new Cell(x, y)).ToList();
+                     select new Cell(x, y, NearCellGenerator(x, y, GetCell)))
+                    .ToList();
         }
 
         internal IList<Cell> Cells { get; }
@@ -51,6 +52,7 @@ namespace MineSweeper
             _ => Cells[(pos.Y * Width) + pos.X]
         };
 
-        public void Click(int x, int y) => throw new NotImplementedException();
+        public void Click(int x, int y) =>
+            GetCell((x, y))?.Click();
     }
 }

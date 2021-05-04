@@ -17,17 +17,8 @@ namespace MineSweeper.Tests
         }
 
         [Fact]
-        public void IsNotNull()
-        {
-            Cell cell = null;
-            MineFieldHelper.IsNotNull(cell).Should().BeFalse();
-            MineFieldHelper.IsNotNull(1).Should().BeTrue();
-        }
-
-        [Fact]
         public void NearCellGenerator()
         {
-            // Arrange
             MineFieldHelper.NearCellGenerator(1, 1, x => new Cell(x.Item1, x.Item2))
                            .Select(x => (x.X, x.Y))
                            .Should()
