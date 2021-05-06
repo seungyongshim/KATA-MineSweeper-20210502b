@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Reflection;
 using FluentAssertions;
 using Xunit;
 using static FpMineSweeper.Prelude;
@@ -34,9 +35,10 @@ namespace FpMineSweeper.Tests
         [Fact]
         public void NearCells()
         {
-            mineField(3, 3).NearCells((0, 0))
-                           .Should()
-                           .BeEquivalentTo(new[] { (1, 0), (0, 1), (1, 1) });
+            var NearCells = typeof(MineField).GetMethod("NearCells", BindingFlags.Instance | BindingFlags.NonPublic);
+            NearCells.Invoke(mineField(3, 3), new object[] { (0, 0) })
+                     .Should()
+                     .BeEquivalentTo(new[] { (1, 0), (0, 1), (1, 1) });
         }
     }
 }
