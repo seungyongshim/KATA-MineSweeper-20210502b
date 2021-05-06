@@ -5,26 +5,18 @@ namespace MineSweeper
 {
     public class Cell
     {
-        public Cell() : this(0, 0)
+        public Cell() : this(Enumerable.Empty<Cell>())
         {
         }
 
-        public Cell(int x, int y) : this(x, y, Enumerable.Empty<Cell>())
+        public Cell(IEnumerable<Cell> nearCellGenerator)
         {
-        }
-
-        public Cell(int x, int y, IEnumerable<Cell> nearCellGenerator)
-        {
-            X = x;
-            Y = y;
             NearCellGenerator = nearCellGenerator;
         }
 
         public bool IsBomb { get; private set; }
         public int NearBombsCount { get; set; }
         public bool IsCovered { get; private set; } = true;
-        public int X { get; }
-        public int Y { get; }
         public IEnumerable<Cell> NearCellGenerator { get; }
 
         public void SetBomb()

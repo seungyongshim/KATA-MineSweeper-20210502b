@@ -21,7 +21,7 @@ namespace MineSweeper
 
             Cells = (from x in Enumerable.Range(0, width)
                      from y in Enumerable.Range(0, height)
-                     select new Cell(x, y, NearCellGenerator(x, y, GetCell)))
+                     select new Cell(NearCellGenerator(x, y, GetCell)))
                     .ToList();
 
             bombPosGenerator.ForEach(x => GetCell(x)?.SetBomb());

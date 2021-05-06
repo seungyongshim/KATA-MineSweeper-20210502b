@@ -15,11 +15,5 @@ namespace MineSweeper.Tests
                                            (0, 1), (2, 1),
                                            (0, 2), (1, 2), (2, 2));
         }
-
-        [Fact]
-        public void NearCellGenerator()
-        {
-            false.Should().BeTrue();
-        }
     }
 }
