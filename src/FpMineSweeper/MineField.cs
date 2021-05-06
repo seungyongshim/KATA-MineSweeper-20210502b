@@ -16,10 +16,11 @@ namespace FpMineSweeper
         public MineFieldReady SetBombs(IEnumerable<(int X, int Y)> bombsPosGenerator) =>
            new(this with
            {
-               Cells = from idx in Enumerable.Range(0, Width * Height)
-                       from bomb in bombsPosGenerator
-                       let bombPos = bomb.X + bomb.Y * Height
-                       select idx == bombPos ? cell(true) : cell(false)
+               Cells = bombsPosGenerator.Select(x => x.X + x.Y * Height)
+                                        .Select(x => from idx in Enumerable.Range(0, Width * Height)
+                                                     select idx == x ? true : false)
+                                        .Aggregate((x, y) => x.Zip(y, (a, b) => a || b))
+                                        .Select(x => cell(x))
            });
     }
 
