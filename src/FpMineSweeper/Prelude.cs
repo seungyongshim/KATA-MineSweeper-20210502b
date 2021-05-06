@@ -10,9 +10,9 @@ namespace FpMineSweeper
         };
 
         public static Cell cell(bool isBomb, int nearBombsCount = 0, bool isCovered = true) =>
-            new Cell(0, 0, isBomb, nearBombsCount, isCovered);
+            new Cell((0, 0), isBomb, nearBombsCount, isCovered);
         public static Cell cell((int X, int Y) pos, bool isBomb, int nearBombsCount = 0, bool isCovered = true) =>
-            new Cell(pos.X, pos.Y, isBomb, nearBombsCount, isCovered);
+            new Cell(pos, isBomb, nearBombsCount, isCovered);
 
         public static MineFieldInit mineField(int width, int height) =>
             new MineFieldInit(width, height);

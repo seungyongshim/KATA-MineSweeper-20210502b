@@ -40,5 +40,27 @@ namespace FpMineSweeper.Tests
                      .Should()
                      .BeEquivalentTo(new[] { (1, 0), (0, 1), (1, 1) });
         }
+
+        [Fact]
+        public void Click()
+        {
+            mineField(3, 3).SetBombs(new[] { (0, 0), (1, 1), (0, 2) })
+                           .Click((0, 0))
+                           .Cells
+                           .Select(str)
+                           .Should()
+                           .BeEquivalentTo(new[] { "*", ".", ".", ".", ".", ".", ".", ".", "." });
+        }
+
+        [Fact]
+        public void Click2()
+        {
+            mineField(3, 3).SetBombs(new[] { (0, 0)})
+                           .Click((2, 2))
+                           .Cells
+                           .Select(str)
+                           .Should()
+                           .BeEquivalentTo(new[] { "*"});
+        }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LanguageExt;
@@ -38,7 +39,7 @@ namespace FpMineSweeper
         {
         }
 
-        public MineFieldReady SetBombs(IEnumerable<(int X, int Y)> bombPosGenerator) =>
+        public MineFieldPlay SetBombs(IEnumerable<(int X, int Y)> bombPosGenerator) =>
            new(this with
            {
                Cells = from y in Enumerable.Range(0, Height)
@@ -57,18 +58,67 @@ namespace FpMineSweeper
                                                  Count = nearBombPosGroup.Count()
                                              }
                        on pos equals nearBombCount.Pos into nearBombCountGroup
-                       from nearBombCountGroupItem in nearBombCountGroup.DefaultIfEmpty()
+                       from nearBombCountGroupItem in nearBombCountGroup.DefaultIfEmpty(new
+                       {
+                           Pos = (-1,-1),
+                           Count = 0
+                       })
                        select cell(pos,
                                    bombPosGroupItem is not null,
                                    nearBombCountGroupItem.Count)
            });
     }
 
-    public record MineFieldReady : MineField
+    public record MineFieldPlay : MineField
     {
-        public MineFieldReady(MineFieldInit mineFieldInit) :
+        public MineFieldPlay(MineFieldInit mineFieldInit) :
             base(mineFieldInit.Width, mineFieldInit.Height, mineFieldInit.Cells)
         {
         }
+
+        public MineFieldPlay Click((int X, int Y) pos) =>
+            new(this with
+            {
+                Cells = from cell in Cells
+                        join uncovered in ClickInner(pos, Cells)
+                        on cell.Pos equals uncovered.Pos into cellGroup
+                        from cellGroupItem in cellGroup.DefaultIfEmpty(null)
+                        select cellGroupItem is null ? cell : cellGroupItem
+            });
+
+        private IEnumerable<Cell> ClickInner((int X, int Y) pos, IEnumerable<Cell> cells)
+        {
+            var stage1 = from cell in cells
+                         where cell.Pos == pos
+                         where cell.IsCovered == true
+                         select cell.Click();
+
+            foreach(var item in stage1)
+            {
+                yield return item;
+            }
+            
+
+            //var stage2 = 
+
+            //var stage3 = from cell in stage1
+            //             where cell.NearBombsCount == 0
+            //             from nearcell in NearCellGenerator(cell.Pos)
+            //             from x in ClickInner(nearcell, stage2)
+            //             select x;
+
+            //var stage4 = from cell in stage2
+            //             join x in from x in stage3
+            //                       group x by x into xGroup
+            //                       select xGroup.Key
+            //             on cell.Pos equals x.Pos into cellGroup
+            //             from cellGroupItem in cellGroup.DefaultIfEmpty(null)
+            //             select cellGroupItem is null ? cell : cellGroupItem;
+        }
+
+
+
+
+
     }
 }
