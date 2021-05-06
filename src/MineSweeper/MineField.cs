@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -14,6 +13,7 @@ namespace MineSweeper
             this(width, height, RandomIndexGenerator(width, height).Distinct()
                                                                    .Take(bombsCount))
         { }
+
         public MineField(int width, int height, IEnumerable<(int X, int Y)> bombPosGenerator)
         {
             Width = width;

@@ -9,10 +9,7 @@ namespace MineSweeper
         {
         }
 
-        public Cell(IEnumerable<Cell> nearCellGenerator)
-        {
-            NearCellGenerator = nearCellGenerator;
-        }
+        public Cell(IEnumerable<Cell> nearCellGenerator) => NearCellGenerator = nearCellGenerator;
 
         public bool IsBomb { get; private set; }
         public int NearBombsCount { get; set; }
