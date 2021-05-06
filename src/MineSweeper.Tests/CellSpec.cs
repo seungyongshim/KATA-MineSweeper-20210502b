@@ -1,4 +1,3 @@
-using System;
 using FluentAssertions;
 using Xunit;
 
@@ -24,10 +23,12 @@ namespace MineSweeper.Tests
         public void NearBombsCount()
         {
             // Arrange
-            var sut = new Cell();
+            var sut = new Cell
+            {
 
-            // Act
-            sut.NearBombsCount = 3;
+                // Act
+                NearBombsCount = 3
+            };
             sut.Click();
 
             // Assert

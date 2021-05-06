@@ -1,4 +1,3 @@
-using System;
 using FluentAssertions;
 using Xunit;
 using static FpMineSweeper.Prelude;
@@ -8,10 +7,7 @@ namespace FpMineSweeper.Tests
     public class CellSpec
     {
         [Fact]
-        public void IsBomb()
-        {
-            cell(true).Should().BeEquivalentTo(new { IsBomb = true });
-        }
+        public void IsBomb() => cell(true).Should().BeEquivalentTo(new { IsBomb = true });
 
         [Fact]
         public void IsCovered()

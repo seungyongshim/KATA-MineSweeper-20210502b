@@ -9,7 +9,7 @@ namespace FpMineSweeper
 
     public record MineFieldInit : MineField
     {
-        public MineFieldInit(int width, int height) : base(width, height, List.empty<Cell>())
+        public MineFieldInit(int width, int height) : base(width, height, Enumerable.Empty<Cell>())
         {
         }
 
@@ -17,11 +17,9 @@ namespace FpMineSweeper
            new(this with
            {
                Cells = from idx in Enumerable.Range(0, Width * Height)
-                       let c = cell(false)
-                       select 
-
+                       from bomb in bombsPosGenerator
                        let bombPos = bomb.X + bomb.Y * Height
-                       select (idx == bombPos ? cell(true) : cell(false)
+                       select idx == bombPos ? cell(true) : cell(false)
            });
     }
 
