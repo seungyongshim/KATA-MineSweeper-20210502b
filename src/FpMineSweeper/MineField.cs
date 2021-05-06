@@ -16,30 +16,29 @@ namespace FpMineSweeper
         public MineFieldReady SetBombs(IEnumerable<(int X, int Y)> bombsPosGenerator) =>
            new(this with
            {
-               Cells = bombsPosGenerator.Select(ConvertPosToIndex)
-                                        .Select(GenerateBooleanMap)
+               Cells = bombsPosGenerator.Map(ConvertPosToIndex)
+                                        .Map(GenerateBooleanMap)
                                         .Aggregate(CombineBooleanMap)
                                         .Zip((from bombPos in bombsPosGenerator
                                               from nearBombPos in NearCells(bombPos)
                                               select nearBombPos)
-                                             .Select(ConvertPosToIndex)
-                                             .Select(x => from idx in Enumerable.Range(0, Width * Height)
-                                                          select idx == x ? 1 : 0)
+                                             .Map(ConvertPosToIndex)
+                                             .Map(GenerateBooleanMap)
+                                             .Map(x => x.Map(b => b ? 1 : 0))
                                              .Aggregate((x, y) => x.Zip(y, (a, b) => a + b)),
                                              (a, b) => cell(a, b))
            });
 
-        public int ConvertPosToIndex((int X, int Y) x) => x.X + x.Y * Width;
+        public int ConvertPosToIndex((int X, int Y) x) => x.X + (x.Y * Width);
 
         public IEnumerable<bool> CombineBooleanMap(IEnumerable<bool> x, IEnumerable<bool> y) =>
             x.Zip(y, (a, b) => a || b);
 
-        public IEnumerable<bool> GenerateBooleanMap (int index) =>
+        public IEnumerable<bool> GenerateBooleanMap(int index) =>
              from idx in Enumerable.Range(0, Width * Height)
-             select idx == index ? true : false;
-             
+             select idx == index;
 
-        public IEnumerable<(int X, int Y)> NearCells((int X, int Y) pos) 
+        public IEnumerable<(int X, int Y)> NearCells((int X, int Y) pos)
         {
             IEnumerable<(int X, int Y)> NearCellsInner()
             {
@@ -55,7 +54,7 @@ namespace FpMineSweeper
 
             bool CheckBoundary((int X, int Y) pos) => pos switch
             {
-                (var x, var y) when x <0 || y <0 || x >= Width || y >= Height => false,
+                (var x, var y) when x < 0 || y < 0 || x >= Width || y >= Height => false,
                 _ => true
             };
 
