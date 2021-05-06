@@ -52,8 +52,9 @@ jobs:
         remove: ''  
       if: ${{ github.ref == 'refs/heads/main' }}
     - name: Publish Unit Test Results
-      uses: docker://ghcr.io/enricomi/publish-unit-test-result-action:v1
-      if: always()
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: ${{ github.ref == 'refs/heads/main' && always() }}
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ github.token }}
         files: src/**/Report.xml
+        check_run_annotations_branch: "*"
