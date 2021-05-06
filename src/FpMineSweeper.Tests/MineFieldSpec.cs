@@ -33,9 +33,9 @@ namespace FpMineSweeper.Tests
         }
 
         [Fact]
-        public void NearCells()
+        public void NearCellGenerator()
         {
-            var NearCells = typeof(MineField).GetMethod("NearCells", BindingFlags.Instance | BindingFlags.NonPublic);
+            var NearCells = typeof(MineField).GetMethod("NearCellGenerator", BindingFlags.Instance | BindingFlags.NonPublic);
             NearCells.Invoke(mineField(3, 3), new object[] { (0, 0) })
                      .Should()
                      .BeEquivalentTo(new[] { (1, 0), (0, 1), (1, 1) });

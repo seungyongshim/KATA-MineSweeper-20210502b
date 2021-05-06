@@ -41,9 +41,9 @@ namespace FpMineSweeper
         public MineFieldReady SetBombs(IEnumerable<(int X, int Y)> bombPosGenerator) =>
            new(this with
            {
-               Cells = from Y in Enumerable.Range(0, Height)
-                       from X in Enumerable.Range(0, Width)
-                       let pos = (X, Y)
+               Cells = from y in Enumerable.Range(0, Height)
+                       from x in Enumerable.Range(0, Width)
+                       select (x, y) into pos
                        join bombPos in from bombPosInner in bombPosGenerator
                                        select new { Pos = bombPosInner }
                        on pos equals bombPos.Pos into bombPosGroup
