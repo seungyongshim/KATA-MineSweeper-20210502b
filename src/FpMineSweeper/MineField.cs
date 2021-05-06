@@ -7,7 +7,7 @@ namespace FpMineSweeper
 {
     public record MineField(int Width, int Height, IEnumerable<Cell> Cells)
     {
-        protected IEnumerable<(int X, int Y)> NearCells((int X, int Y) pos)
+        protected IEnumerable<(int X, int Y)> NearCellGenerator((int X, int Y) pos)
         {
             IEnumerable<(int X, int Y)> NearCellsInner()
             {
@@ -49,7 +49,7 @@ namespace FpMineSweeper
                        on pos equals bombPos.Pos into bombPosGroup
                        from bombPosGroupItem in bombPosGroup.DefaultIfEmpty(null)
                        join nearBombCount in from bombPosInner in bombPosGenerator
-                                             from nearBombPos in NearCells(bombPosInner)
+                                             from nearBombPos in NearCellGenerator(bombPosInner)
                                              group nearBombPos by nearBombPos into nearBombPosGroup
                                              select new
                                              {
